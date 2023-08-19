@@ -1,0 +1,24 @@
+name: release
+run-name: Build package and publish to PyPI
+on:
+  push:
+    tags:
+      - v*
+jobs:
+  build-and-publish:
+    name: Build latest release and publish to PyPi
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Ensure Python is installed
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+      - name: Show Python version
+        run: python3 -VV
+      - name: Install build dependencies
+        run: python3 -m pip install --upgrade pip build twine
+      - name: Build package
+        run: python3 -m build
+      - name: Upload distribution to PyPI
+        run: python3 -m twine upload dist/* -u '__token__' -p '${{ secrets.PYPI_TOKEN }}'
