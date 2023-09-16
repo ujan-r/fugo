@@ -113,3 +113,25 @@ class Note:
             raise ValueError(f'invalid octave {_octave!r} in string {note!r}')
 
         return cls(letter, accidental, octave)
+
+    @property
+    def pitch(self) -> int:
+        """Return the MIDI note number for a `Note`."""
+
+        # MIDI note numbers are higher than you might expect. The lowest
+        # note (what fugo calls C-1) is assigned the value 0.
+        #
+        # This means--for example--that C4 (despite its octave number)
+        # is actually five octaves above zero. We account for this
+        # offset here.
+        octave = self.octave + 1
+
+        # Add the correct number of semitones above C based on the
+        # note's letter name.
+        letter = self.letter.value
+
+        # Adjust the pitch by the correct number of semitones based on
+        # the applied accidental.
+        accidental = self.accidental.value
+
+        return (octave * 12) + letter + accidental
