@@ -68,6 +68,9 @@ class Note:
             and self.octave == other.octave
         )
 
+    def __hash__(self):
+        return self.pitch
+
     @classmethod
     def from_string(cls, /, note: str):
         letter: LetterName
