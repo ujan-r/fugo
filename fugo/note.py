@@ -53,10 +53,12 @@ class Accidental(Enum):
 
 
 class Note:
-    def __init__(self, letter: LetterName, accidental: Accidental, octave: int = 4):
-        self.letter = letter
-        self.accidental = accidental
-        self.octave = octave
+    def __init__(self, /, note: str):
+        copy = Note.from_string(note)
+
+        self.letter = copy.letter
+        self.octave = copy.octave
+        self.accidental = copy.accidental
 
     def __eq__(self, other: 'Note') -> bool:
         if not isinstance(other, type(self)):
@@ -70,6 +72,16 @@ class Note:
 
     def __hash__(self):
         return self.pitch
+
+    @classmethod
+    def from_attrs(cls, letter: LetterName, accidental: Accidental, octave: int = 4):
+        note = super().__new__(cls)
+
+        note.letter = letter
+        note.accidental = accidental
+        note.octave = octave
+
+        return note
 
     @classmethod
     def from_string(cls, /, note: str):
@@ -115,7 +127,7 @@ class Note:
         except ValueError:
             raise ValueError(f'invalid octave {_octave!r} in string {note!r}')
 
-        return cls(letter, accidental, octave)
+        return cls.from_attrs(letter, accidental, octave)
 
     @property
     def pitch(self) -> int:
