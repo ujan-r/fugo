@@ -2,6 +2,7 @@ __all__ = ['Note']
 
 
 from enum import Enum
+from functools import total_ordering
 
 
 class LetterName(Enum):
@@ -52,6 +53,7 @@ class Accidental(Enum):
             raise ValueError(f'invalid accidental: {accidental!r}') from None
 
 
+@total_ordering
 class Note:
     def __init__(self, /, note: str):
         copy = Note.from_string(note)
@@ -69,6 +71,32 @@ class Note:
             and self.accidental == other.accidental
             and self.octave == other.octave
         )
+
+    def __lt__(self, other: 'Note') -> bool:
+        if not isinstance(other, type(self)):
+            return NotImplemented
+
+        # The notes are in different octaves. Note that this means B#3
+        # is considered "lower" than Cb4.
+        if self.octave != other.octave:
+            return self.octave < other.octave
+
+        # The notes are in the same octave, so compare their letter
+        # names. Note that A# is "lower" than Bb.
+        if self.letter != other.letter:
+            # Get the letters in definition order (C, D, E, F, G, A, B).
+            order = [*LetterName]
+
+            return order.index(self.letter) < order.index(other.letter)
+
+        # The notes have the same octave number and letter name, so
+        # compare their accidentals. This works as you'd expect.
+        if self.accidental != other.accidental:
+            return self.accidental.value < other.accidental.value
+
+        # The notes have the same octave, letter name, and accidental.
+        # They are equal.
+        return False
 
     def __hash__(self):
         return self.pitch
