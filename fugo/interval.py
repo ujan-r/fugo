@@ -32,9 +32,12 @@ class Quality(Enum):
 class Interval:
     """Represent the distance between two notes."""
 
-    def __init__(self, quality: Quality, size: Size):
-        self.quality = quality
-        self.size = size
+    def __init__(self, /, interval: str):
+        self.quality: Quality
+        self.size: Size
+
+        copy = self.from_string(interval)
+        vars(self).update(vars(copy))
 
     def __str__(self):
         quality = self.quality.name.lower()
@@ -47,6 +50,15 @@ class Interval:
             return NotImplemented
 
         return self.quality == other.quality and self.size == other.size
+
+    @classmethod
+    def from_attrs(cls, quality: Quality, size: Size) -> 'Interval':
+        obj = super().__new__(cls)
+
+        obj.quality = quality
+        obj.size = size
+
+        return obj
 
     @classmethod
     def from_string(cls, interval: str) -> 'Interval':
@@ -114,7 +126,7 @@ class Interval:
             )
         size = Size(_size - 1)
 
-        return cls(quality, size)
+        return cls.from_attrs(quality, size)
 
     @classmethod
     def between(cls, /, note1: Note, note2: Note) -> 'Interval':
