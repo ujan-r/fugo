@@ -128,8 +128,8 @@ class Interval:
 
         return cls.from_attrs(quality, size)
 
-    @classmethod
-    def between(cls, /, note1: Note, note2: Note) -> 'Interval':
-        """Return the interval between two notes."""
-        # TODO: implement this method
-        raise NotImplementedError
+
+def distance(note1: Note, note2: Note, /) -> Interval:
+    """Return the interval between two notes."""
+    # TODO: implement this method
+    raise NotImplementedError
