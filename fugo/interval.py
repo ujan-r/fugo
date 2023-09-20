@@ -1,4 +1,4 @@
-__all__ = ['Interval']
+__all__ = ['Interval', 'distance']
 
 
 from enum import Enum, auto
