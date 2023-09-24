@@ -3,6 +3,7 @@ __all__ = ['Interval', 'distance']
 
 from enum import Enum, auto
 from fugo import Note
+from fugo.note import LetterName
 
 
 class Size(Enum):
@@ -130,6 +131,88 @@ class Interval:
 
 
 def distance(note1: Note, note2: Note, /) -> Interval:
-    """Return the interval between two notes."""
-    # TODO: implement this method
-    raise NotImplementedError
+    """Return the interval between two notes.
+
+    args:
+        - `note1`, `note2`
+
+    returns:
+        - `Interval` representing the distance between the two notes
+
+    notes:
+        - only simple intervals are returned (compound intervals, such
+        as tenths, will be converted to their simple equivalents, like
+        thirds)
+    """
+    low, high = sorted((note1, note2))
+
+    # Get the letter names in definition order (C, D, E, F, G, A, B).
+    order = [*LetterName]
+
+    # For each note, find the position of its unaltered version within
+    # the octave. Since we know which note is lower, this is sufficient
+    # to determine the size of the interval (or at least its simple
+    # equivalent).
+    low_index = order.index(low.letter)
+    high_index = order.index(high.letter)
+
+    # Ensure that `high_index` >= `low_index` while still distinguishing
+    # between unisons and octaves.
+    if low.octave != high.octave:
+        high_index += 7
+
+    size = Size(high_index - low_index)
+
+    # Find the distance (in semitones) between the two notes (mod 12 to
+    # ignore octave differences). Use this, along with the interval
+    # size, to determine the quality.
+    distance = (high.pitch - low.pitch) % 12
+    qualities = {
+        Size.UNISON: {
+            11: Quality.DIMINISHED,
+            0: Quality.PERFECT,
+            1: Quality.AUGMENTED,
+        },
+        Size.OCTAVE: {
+            11: Quality.DIMINISHED,
+            0: Quality.PERFECT,
+            1: Quality.AUGMENTED,
+        },
+        Size.SECOND: {
+            0: Quality.DIMINISHED,
+            1: Quality.MINOR,
+            2: Quality.MAJOR,
+            3: Quality.AUGMENTED,
+        },
+        Size.THIRD: {
+            2: Quality.DIMINISHED,
+            3: Quality.MINOR,
+            4: Quality.MAJOR,
+            5: Quality.AUGMENTED,
+        },
+        Size.FOURTH: {
+            4: Quality.DIMINISHED,
+            5: Quality.PERFECT,
+            6: Quality.AUGMENTED,
+        },
+        Size.FIFTH: {
+            6: Quality.DIMINISHED,
+            7: Quality.PERFECT,
+            8: Quality.AUGMENTED,
+        },
+        Size.SIXTH: {
+            7: Quality.DIMINISHED,
+            8: Quality.MINOR,
+            9: Quality.MAJOR,
+            10: Quality.AUGMENTED,
+        },
+        Size.SEVENTH: {
+            9: Quality.DIMINISHED,
+            10: Quality.MINOR,
+            11: Quality.MAJOR,
+            0: Quality.AUGMENTED,
+        },
+    }
+    quality = qualities[size][distance]
+
+    return Interval.from_attrs(quality, size)
