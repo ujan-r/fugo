@@ -25,7 +25,7 @@ class Quality(Enum):
     PERFECT = auto()
     MAJOR = auto()
     MINOR = auto()
-    DIMINSHED = auto()
+    DIMINISHED = auto()
     AUGMENTED = auto()
 
 
@@ -112,8 +112,8 @@ class Interval:
             'p': Quality.PERFECT,
             'M': Quality.MAJOR,
             'm': Quality.MINOR,
-            'd': Quality.DIMINSHED,
-            'D': Quality.DIMINSHED,
+            'd': Quality.DIMINISHED,
+            'D': Quality.DIMINISHED,
             'A': Quality.AUGMENTED,
             'a': Quality.AUGMENTED,
         }
