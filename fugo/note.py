@@ -19,7 +19,7 @@ class LetterName(Enum):
         try:
             return cls[letter.strip().upper()]
         except KeyError:
-            raise ValueError(f"invalid letter: '{letter}'") from None
+            raise ValueError(f'invalid letter: {letter!r}') from None
 
 
 class Accidental(Enum):
