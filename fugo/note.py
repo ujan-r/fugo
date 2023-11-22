@@ -87,7 +87,7 @@ class Note:
         return self.pitch
 
     @classmethod
-    def from_attrs(cls, letter: LetterName, accidental: Accidental, octave: int = 4):
+    def from_attrs(cls, letter: LetterName, accidental: Accidental, octave: int):
         note = super().__new__(cls)
 
         note.letter = letter
