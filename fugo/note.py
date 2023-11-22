@@ -97,48 +97,41 @@ class Note:
         return note
 
     @classmethod
-    def from_string(cls, /, note: str):
-        letter: LetterName
-        accidental: Accidental
-        octave: int
+    def from_string(cls, note: str) -> 'Note':
+        # Use a generator to simplify parsing code.
+        stream = (c for c in note.strip())
 
-        buffer = (char for char in note.strip())
-
-        # Get the letter name from the beginning of the string.
-        # Don't skip leading whitespace, as it's already been stripped.
+        # Since letter names are one character long, we can grab easily
+        # the letter name.
+        _letter = next(stream)
         try:
-            _letter = next(buffer)
-        except StopIteration:
-            raise ValueError(f'no note in string {note!r}')
-
-        letter = LetterName[_letter.upper()]
-
-        # Skip whitespace after letter.
-        try:
-            while (char := next(buffer)).isspace():
-                continue
-        except StopIteration:
-            raise ValueError(f'no octave in string {note!r}')
-
-        _accidental = []
-        while char not in ' +-0123456789':
-            _accidental.append(char)
-            try:
-                char = next(buffer)
-            except StopIteration:
-                raise ValueError(f'no octave in string {note!r}')
-
-        accidental = Accidental.from_string(''.join(_accidental))
-
-        while char.isspace():
-            char = next(buffer)
-
-        _octave = ''.join([char, *buffer])
-
-        try:
-            octave = int(_octave)
+            letter = LetterName.from_string(_letter)
         except ValueError:
-            raise ValueError(f'invalid octave {_octave!r} in string {note!r}')
+            raise ValueError(f"couldn't find letter name in {note!r}")
+
+        _accidental = ''
+        for c in stream:
+            if c in '+-0123456789':
+                # We have reached the end of the accidental once we
+                # encounter something that looks like a number. The
+                # remaining characters must be the octave number.
+                _octave = c + ''.join(stream)
+                break
+
+            # If we haven't encountered a number, assume we are still
+            # reading the accidental.
+            #
+            # While repeated string concatenation is generally
+            # considered bad style, the strings involved are so short
+            # that it doesn't matter here.
+            _accidental += c
+        else:
+            # If we reach the end of the buffer without encountering a
+            # numeric character, there must not be an octave number.
+            raise ValueError(f'missing octave number in {note!r}')
+
+        accidental = Accidental.from_string(_accidental)
+        octave = int(_octave)
 
         return cls.from_attrs(letter, accidental, octave)
 
