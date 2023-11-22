@@ -11,6 +11,9 @@ class LetterName(Enum):
     A = 9
     B = 11
 
+    def __init__(self, steps_above_C: int):
+        self.steps_above_C = steps_above_C
+
     def __repr__(self):
         return f'LetterName.{self.name}'
 
@@ -28,6 +31,9 @@ class Accidental(Enum):
     NATURAL = 0
     SHARP = +1
     DOUBLE_SHARP = +2
+
+    def __init__(self, offset: int):
+        self.offset = offset
 
     @classmethod
     def from_string(cls, /, accidental: str) -> 'Accidental':
