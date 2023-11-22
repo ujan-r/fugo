@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from enum import Enum
 from functools import total_ordering
 
@@ -56,6 +57,14 @@ class Accidental(Enum):
             return mapping[accidental.strip()]
         except KeyError:
             raise ValueError(f'invalid accidental: {accidental!r}') from None
+
+
+@dataclass
+class NoteClass:
+    """Represent a note type (analogous to a pitch class)."""
+
+    letter: LetterName
+    accidental: Accidental
 
 
 @total_ordering
