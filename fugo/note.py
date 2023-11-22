@@ -26,11 +26,13 @@ class LetterName(Enum):
 
 
 class Accidental(Enum):
-    DOUBLE_FLAT = -2
-    FLAT = -1
-    NATURAL = 0
-    SHARP = +1
+    # fmt: off
+    DOUBLE_FLAT  = -2
+    FLAT         = -1
+    NATURAL      =  0
+    SHARP        = +1
     DOUBLE_SHARP = +2
+    # fmt: on
 
     def __init__(self, offset: int):
         self.offset = offset
