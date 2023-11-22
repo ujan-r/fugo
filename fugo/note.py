@@ -88,6 +88,8 @@ class Note:
 
     @classmethod
     def from_attrs(cls, letter: LetterName, accidental: Accidental, octave: int):
+        # Create a new `Note` object without using the constructor,
+        # which relies on this method internally.
         note = super().__new__(cls)
 
         note.letter = letter
@@ -137,22 +139,12 @@ class Note:
 
     @property
     def pitch(self) -> int:
-        """Return the MIDI note number for a `Note`."""
-
+        """Get the MIDI note number."""
         # MIDI note numbers are higher than you might expect. The lowest
         # note (what fugo calls C-1) is assigned the value 0.
         #
         # This means--for example--that C4 (despite its octave number)
-        # is actually five octaves above zero. We account for this
-        # offset here.
+        # is actually five octaves above zero. Account for this offset.
         octave = self.octave + 1
 
-        # Add the correct number of semitones above C based on the
-        # note's letter name.
-        letter = self.letter.value
-
-        # Adjust the pitch by the correct number of semitones based on
-        # the applied accidental.
-        accidental = self.accidental.value
-
-        return (octave * 12) + letter + accidental
+        return octave * 12 + self.letter.steps_above_C + self.accidental.offset
