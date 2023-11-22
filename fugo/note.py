@@ -1,6 +1,3 @@
-__all__ = ['Note']
-
-
 from enum import Enum
 from functools import total_ordering
 
