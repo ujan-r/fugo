@@ -63,9 +63,9 @@ class Note:
     def __init__(self, /, note: str):
         copy = Note.from_string(note)
 
-        self.letter = copy.letter
-        self.octave = copy.octave
-        self.accidental = copy.accidental
+        self.letter: LetterName = copy.letter
+        self.accidental: Accidental = copy.accidental
+        self.octave: int = copy.octave
 
     def __eq__(self, other: 'Note') -> bool:
         if not isinstance(other, type(self)):
