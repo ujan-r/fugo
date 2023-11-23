@@ -1,9 +1,6 @@
-__all__ = ['Interval', 'distance']
-
-
 from enum import Enum, auto
-from fugo import Note
-from fugo.note import LetterName
+
+from fugo import Note, LetterName
 
 
 class Size(Enum):
