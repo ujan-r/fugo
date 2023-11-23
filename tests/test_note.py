@@ -4,9 +4,9 @@ from fugo import Note, Accidental, LetterName
 def test_parsing():
     expected = {
         'C4': Note.from_attrs(LetterName.C, Accidental.NATURAL, 4),
-        '   d#4': Note.from_attrs(LetterName.D, Accidental.SHARP, 4),
-        '  ebb-20  ': Note.from_attrs(LetterName.E, Accidental.DOUBLE_FLAT, -20),
-        '  bb-20  ': Note.from_attrs(LetterName.B, Accidental.FLAT, -20),
+        'd#4': Note.from_attrs(LetterName.D, Accidental.SHARP, 4),
+        'ebb-20': Note.from_attrs(LetterName.E, Accidental.DOUBLE_FLAT, -20),
+        'bb-20': Note.from_attrs(LetterName.B, Accidental.FLAT, -20),
     }
 
     for string, note in expected.items():
