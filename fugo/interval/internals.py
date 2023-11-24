@@ -4,14 +4,16 @@ from enum import Enum, auto
 
 
 class Size(Enum):
-    UNISON = 0
-    SECOND = 1
-    THIRD = 2
-    FOURTH = 3
-    FIFTH = 4
-    SIXTH = 5
+    # fmt: off
+    UNISON  = 0
+    SECOND  = 1
+    THIRD   = 2
+    FOURTH  = 3
+    FIFTH   = 4
+    SIXTH   = 5
     SEVENTH = 6
-    OCTAVE = 7
+    OCTAVE  = 7
+    # fmt: on
 
     # Replace compound intervals with their simple equivalents.
     @classmethod
@@ -20,8 +22,10 @@ class Size(Enum):
 
 
 class Quality(Enum):
-    PERFECT = auto()
-    MAJOR = auto()
-    MINOR = auto()
+    # fmt: off
     DIMINISHED = auto()
-    AUGMENTED = auto()
+    MINOR      = auto()
+    PERFECT    = auto()
+    MAJOR      = auto()
+    AUGMENTED  = auto()
+    # fmt: on
