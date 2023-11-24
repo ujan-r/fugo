@@ -60,9 +60,7 @@ class Accidental(Enum):
 
 
 @dataclass
-class NoteClass:
-    """Represent a note type (analogous to a pitch class)."""
-
+class NoteName:
     letter: LetterName
     accidental: Accidental
 
