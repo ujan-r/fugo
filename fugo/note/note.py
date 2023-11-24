@@ -1,17 +1,10 @@
-__all__ = ['distance', 'Note', 'NoteName']
+__all__ = ['distance', 'Note']
 
-from dataclasses import dataclass
 from functools import total_ordering
 
 from fugo import Interval
 from ..interval.internals import Size, Quality
 from .internals import Accidental, LetterName
-
-
-@dataclass
-class NoteName:
-    letter: LetterName
-    accidental: Accidental
 
 
 @total_ordering
