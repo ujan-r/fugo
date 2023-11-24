@@ -25,6 +25,9 @@ class Interval:
 
         return self.quality == other.quality and self.size == other.size
 
+    def __hash__(self):
+        return self.quality.value + self.size.value
+
     @classmethod
     def from_attrs(cls, quality: Quality, size: Size) -> 'Interval':
         obj = super().__new__(cls)
