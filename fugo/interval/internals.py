@@ -32,3 +32,7 @@ class Quality(Enum):
     MAJOR      = auto()
     AUGMENTED  = auto()
     # fmt: on
+
+    def __invert__(self):
+        index = [*Quality].index(self)
+        return [*reversed(Quality)][index]
