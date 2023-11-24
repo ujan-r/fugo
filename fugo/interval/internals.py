@@ -20,6 +20,9 @@ class Size(Enum):
     def _missing_(cls, value: int):
         return cls(value % 7 or 7)
 
+    def __invert__(self):
+        return Size(7 - self.value)
+
 
 class Quality(Enum):
     # fmt: off
