@@ -16,6 +16,20 @@ def test_parsing():
         assert Interval(string) == interval
 
 
+def test_invert():
+    expected = {
+        Interval('P1'): Interval('P8'),
+        Interval('a1'): Interval('d8'),
+        Interval('M3'): Interval('m6'),
+        Interval('d7'): Interval('A2'),
+        Interval('m2'): Interval('M7'),
+    }
+
+    for interval, inverse in expected.items():
+        assert ~interval == inverse
+        assert interval == ~inverse
+
+
 def test_distance():
     """Test the `distance()` function."""
     expected = {
