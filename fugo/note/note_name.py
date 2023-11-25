@@ -16,6 +16,9 @@ class NoteName:
         self.letter = copy.letter
         self.accidental = copy.accidental
 
+    def __hash__(self):
+        return self.pitch
+
     @classmethod
     def from_string(cls, name: str):
         name = name.strip()
