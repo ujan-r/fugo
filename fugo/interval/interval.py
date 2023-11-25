@@ -107,3 +107,44 @@ class Interval:
         size = Size(_size - 1)
 
         return cls.from_attrs(quality, size)
+
+    @property
+    def steps(self) -> int:
+        return {
+            # unisons
+            Interval('d1'): 11,
+            Interval('P1'): 0,
+            Interval('A1'): 1,
+            # seconds
+            Interval('d2'): 0,
+            Interval('m2'): 1,
+            Interval('M2'): 2,
+            Interval('A2'): 3,
+            # thirds
+            Interval('d3'): 2,
+            Interval('m3'): 3,
+            Interval('M3'): 4,
+            Interval('A3'): 5,
+            # fourths
+            Interval('d4'): 4,
+            Interval('P4'): 5,
+            Interval('A4'): 6,
+            # fifths
+            Interval('d5'): 6,
+            Interval('P5'): 7,
+            Interval('A5'): 8,
+            # sixths
+            Interval('d6'): 7,
+            Interval('m6'): 8,
+            Interval('M6'): 9,
+            Interval('A6'): 10,
+            # sevenths
+            Interval('d7'): 9,
+            Interval('m7'): 10,
+            Interval('M7'): 11,
+            Interval('A7'): 12,
+            # octaves
+            Interval('d8'): 11,
+            Interval('P8'): 0,
+            Interval('A8'): 1,
+        }[self]
