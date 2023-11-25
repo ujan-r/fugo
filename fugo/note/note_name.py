@@ -33,3 +33,7 @@ class NoteName:
         obj.accidental = accidental
 
         return obj
+
+    @property
+    def pitch(self) -> int:
+        return (self.letter.steps_above_C + self.accidental.offset) % 12
