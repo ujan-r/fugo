@@ -1,5 +1,5 @@
 name: tests
-on: [pull_request, workflow_dispatch]
+on: [pull_request, push, workflow_dispatch]
 jobs:
   run-tests:
     name: Perform tests
