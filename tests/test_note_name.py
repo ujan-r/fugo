@@ -93,3 +93,58 @@ def test_addition():
 
     for a, b, c in expected:
         assert a + b == c
+
+
+def test_subtraction():
+    expected = [
+        (NoteName('D'), Interval('d1'), NoteName('D#')),
+        (NoteName('Gb'), Interval('d1'), NoteName('G')),
+        (NoteName('B'), Interval('d1'), NoteName('B#')),
+        (NoteName('Dbb'), Interval('P1'), NoteName('Dbb')),
+        (NoteName('C'), Interval('P1'), NoteName('C')),
+        (NoteName('B'), Interval('A1'), NoteName('Bb')),
+        (NoteName('D#'), Interval('A1'), NoteName('D')),
+        (NoteName('F'), Interval('d2'), NoteName('E#')),
+        (NoteName('C#'), Interval('d2'), NoteName('Bx')),
+        (NoteName('D'), Interval('m2'), NoteName('C#')),
+        (NoteName('C'), Interval('m2'), NoteName('B')),
+        (NoteName('Fb'), Interval('M2'), NoteName('Ebb')),
+        (NoteName('Bx'), Interval('A2'), NoteName('A#')),
+        (NoteName('C#'), Interval('A2'), NoteName('Bb')),
+        (NoteName('Eb'), Interval('d3'), NoteName('C#')),
+        (NoteName('D'), Interval('m3'), NoteName('B')),
+        (NoteName('Bb'), Interval('M3'), NoteName('Gb')),
+        (NoteName('Bb'), Interval('A3'), NoteName('Gbb')),
+        (NoteName('E'), Interval('A3'), NoteName('Cb')),
+        (NoteName('E'), Interval('d4'), NoteName('B#')),
+        (NoteName('Cb'), Interval('d4'), NoteName('G')),
+        (NoteName('F#'), Interval('P4'), NoteName('C#')),
+        (NoteName('F#'), Interval('A4'), NoteName('C')),
+        (NoteName('D'), Interval('A4'), NoteName('Ab')),
+        (NoteName('G#'), Interval('d5'), NoteName('Cx')),
+        (NoteName('Bb'), Interval('d5'), NoteName('E')),
+        (NoteName('F'), Interval('P5'), NoteName('Bb')),
+        (NoteName('F#'), Interval('A5'), NoteName('Bb')),
+        (NoteName('B'), Interval('d6'), NoteName('Dx')),
+        (NoteName('C#'), Interval('d6'), NoteName('Ex')),
+        (NoteName('A'), Interval('m6'), NoteName('C#')),
+        (NoteName('B'), Interval('M6'), NoteName('D')),
+        (NoteName('Cb'), Interval('M6'), NoteName('Ebb')),
+        (NoteName('Eb'), Interval('d7'), NoteName('F#')),
+        (NoteName('Cb'), Interval('d7'), NoteName('D')),
+        (NoteName('E'), Interval('m7'), NoteName('F#')),
+        (NoteName('F#'), Interval('m7'), NoteName('G#')),
+        (NoteName('D#'), Interval('M7'), NoteName('E')),
+        (NoteName('B'), Interval('M7'), NoteName('C')),
+        (NoteName('C'), Interval('A7'), NoteName('Dbb')),
+        (NoteName('C#'), Interval('A7'), NoteName('Db')),
+        (NoteName('G'), Interval('d8'), NoteName('G#')),
+        (NoteName('C'), Interval('d8'), NoteName('C#')),
+        (NoteName('Cb'), Interval('P8'), NoteName('Cb')),
+        (NoteName('B#'), Interval('P8'), NoteName('B#')),
+        (NoteName('E'), Interval('A8'), NoteName('Eb')),
+        (NoteName('Fx'), Interval('A8'), NoteName('F#')),
+    ]
+
+    for a, b, c in expected:
+        assert a - b == c
