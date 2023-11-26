@@ -2,6 +2,7 @@ __all__ = ['NoteName']
 
 from dataclasses import dataclass
 
+from fugo import Interval
 from .internals import Accidental, LetterName
 
 
@@ -18,6 +19,19 @@ class NoteName:
 
     def __hash__(self):
         return self.pitch
+
+    def __add__(self, interval: Interval) -> 'NoteName':
+        letters = [*LetterName]
+        current = letters.index(self.letter)
+        new = current + interval.size.value
+        letter = letters[new % len(letters)]
+
+        distance = letter.steps_above_C - self.pitch
+        offset = (interval.steps - distance) % 12
+        offset = min(offset, offset - 12, key=abs)
+        accidental = Accidental(offset)
+
+        return NoteName.from_attrs(letter, accidental)
 
     @classmethod
     def from_string(cls, name: str):
