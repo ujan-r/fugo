@@ -33,6 +33,9 @@ class NoteName:
 
         return NoteName.from_attrs(letter, accidental)
 
+    def __sub__(self, interval: Interval) -> 'NoteName':
+        return self + ~interval
+
     @classmethod
     def from_string(cls, name: str):
         name = name.strip()
