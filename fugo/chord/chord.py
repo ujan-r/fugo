@@ -1,8 +1,9 @@
-__all__ = ['Quality']
+__all__ = ['Quality', 'Chord']
 
+from dataclasses import dataclass
 from enum import Enum
 
-from fugo import Interval
+from fugo import Interval, NoteName
 
 
 class Quality(list[Interval], Enum):
@@ -21,3 +22,29 @@ class Quality(list[Interval], Enum):
     HALF_DIM_7 = intervals('P1 m3 d5 m7')
     # fmt: on
     del intervals
+
+
+@dataclass
+class Chord:
+    root: NoteName
+    quality: list[Interval]
+    inversion: int = 0
+
+    def __iter__(self):
+        return iter(self.note_names)
+
+    def __len__(self):
+        return len(self.note_names)
+
+    def __hash__(self):
+        return 0
+
+    @property
+    def note_names(self) -> list[NoteName]:
+        # Find the chord members.
+        intervals = self.quality
+        notes = [self.root + interval for interval in intervals]
+
+        # Invert the chord as necessary.
+        inversion = self.inversion % len(self.quality)
+        return notes[inversion:] + notes[:inversion]
