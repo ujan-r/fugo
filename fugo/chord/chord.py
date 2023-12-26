@@ -74,6 +74,10 @@ class Chord:
     quality: list[Interval]
     inversion: int = 0
 
+    def __init__(self, chord: str):
+        copy = self.from_string(chord)
+        vars(self).update(vars(copy))
+
     def __iter__(self):
         return iter(self.note_names)
 
@@ -108,12 +112,18 @@ class Chord:
 
         if slash:
             bass = NoteName(_bass)
-            inversion = Chord(root, quality).note_names.index(bass)
+            inversion = Chord.from_attrs(root, quality).note_names.index(bass)
         else:
             inversion = 0
 
+        return cls.from_attrs(root, quality, inversion)
+
+    @classmethod
+    def from_attrs(cls, root: NoteName, quality: list[Interval], inversion: int = 0):
         chord = super().__new__(cls)
-        chord.__init__(root, quality, inversion)
+        chord.root = root
+        chord.quality = quality
+        chord.inversion = inversion
         return chord
 
     @property
