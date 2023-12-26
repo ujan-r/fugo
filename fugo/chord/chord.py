@@ -23,6 +23,49 @@ class Quality(list[Interval], Enum):
     # fmt: on
     del intervals
 
+    @classmethod
+    def from_string(cls, /, symbol: str):
+        mapping = {
+            'M': cls.MAJOR,
+            'maj': cls.MAJOR,
+            '': cls.MAJOR,
+            'm': cls.MINOR,
+            'min': cls.MINOR,
+            '-': cls.MINOR,
+            'dim': cls.DIMINISHED,
+            'º': cls.DIMINISHED,
+            'o': cls.DIMINISHED,
+            'aug': cls.AUGMENTED,
+            '+': cls.AUGMENTED,
+            '7': cls.MAJ_MIN_7,
+            'Mm7': cls.MAJ_MIN_7,
+            'maj7': cls.MAJ_7,
+            'M7': cls.MAJ_7,
+            'Δ': cls.MAJ_7,
+            'Δ7': cls.MAJ_7,
+            'min7': cls.MIN_7,
+            'm7': cls.MIN_7,
+            '-7': cls.MIN_7,
+            'mM7': cls.MIN_MAJ_7,
+            '-M7': cls.MIN_MAJ_7,
+            '-Δ7': cls.MIN_MAJ_7,
+            'minmaj7': cls.MIN_MAJ_7,
+            'o7': cls.DIM_7,
+            'º7': cls.DIM_7,
+            'dim7': cls.DIM_7,
+            'ø': cls.HALF_DIM_7,
+            'ø7': cls.HALF_DIM_7,
+            'm7b5': cls.HALF_DIM_7,
+            'm7♭5': cls.HALF_DIM_7,
+            'min7b5': cls.HALF_DIM_7,
+            'min7♭5': cls.HALF_DIM_7,
+        }
+
+        try:
+            return mapping[symbol.strip()]
+        except KeyError:
+            raise ValueError(f'invalid symbol: {symbol!r}') from None
+
 
 @dataclass
 class Chord:
