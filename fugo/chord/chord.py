@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 from fugo import Interval, NoteName
+from fugo.note.internals import Accidental, LetterName
 
 
 class Quality(list[Interval], Enum):
@@ -81,6 +82,39 @@ class Chord:
 
     def __hash__(self):
         return 0
+
+    @classmethod
+    def from_string(cls, name: str):
+        rest = name.strip()
+
+        _letter, rest = rest[0], rest[1:]
+        letter = LetterName.from_string(_letter)
+
+        if rest[:2] == 'bb':
+            accidental = Accidental.DOUBLE_FLAT
+            rest = rest[2:]
+        else:
+            try:
+                accidental = Accidental.from_string(rest[0])
+            except (ValueError, IndexError):
+                accidental = Accidental.NATURAL
+            else:
+                rest = rest[1:]
+
+        root = NoteName.from_attrs(letter, accidental)
+
+        _quality, slash, _bass = rest.partition('/')
+        quality = Quality.from_string(_quality)
+
+        if slash:
+            bass = NoteName(_bass)
+            inversion = Chord(root, quality).note_names.index(bass)
+        else:
+            inversion = 0
+
+        chord = super().__new__(cls)
+        chord.__init__(root, quality, inversion)
+        return chord
 
     @property
     def note_names(self) -> list[NoteName]:
