@@ -108,7 +108,11 @@ class Chord:
         root = NoteName.from_attrs(letter, accidental)
 
         _quality, slash, _bass = rest.partition('/')
-        quality = Quality.from_string(_quality)
+
+        if _quality:
+            quality = Quality.from_string(_quality)
+        else:
+            quality = Quality.MAJOR if _letter.isupper() else Quality.MINOR
 
         if slash:
             bass = NoteName(_bass)
