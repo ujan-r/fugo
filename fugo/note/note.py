@@ -1,5 +1,6 @@
 __all__ = ['distance', 'Note']
 
+from dataclasses import dataclass
 from functools import total_ordering
 
 from fugo import Interval
@@ -8,13 +9,15 @@ from .internals import Accidental, LetterName
 
 
 @total_ordering
+@dataclass
 class Note:
+    letter: LetterName
+    accidental: Accidental
+    octave: int
+
     def __init__(self, /, note: str):
         copy = Note.from_string(note)
-
-        self.letter: LetterName = copy.letter
-        self.accidental: Accidental = copy.accidental
-        self.octave: int = copy.octave
+        vars(self).update(vars(copy))
 
     def __repr__(self):
         string = str(self)
@@ -34,14 +37,6 @@ class Note:
         octave = str(self.octave)
 
         return f'{letter}{accidental}{octave}'
-
-    def __eq__(self, other: 'Note') -> bool:
-        if not isinstance(other, type(self)):
-            return NotImplemented
-
-        t1 = (self.octave, self.letter.steps_above_C, self.accidental.offset)
-        t2 = (other.octave, other.letter.steps_above_C, other.accidental.offset)
-        return t1 == t2
 
     def __lt__(self, other: 'Note') -> bool:
         if not isinstance(other, type(self)):
