@@ -13,11 +13,23 @@ class Interval:
         copy = self.from_string(interval)
         vars(self).update(vars(copy))
 
-    def __str__(self):
-        quality = self.quality.name.lower()
-        size = self.size.name.lower()
+    def __repr__(self):
+        string = str(self)
+        return f'Interval({string!r})'
 
-        return f'<Interval: {quality} {size}>'
+    def __str__(self):
+        qualities = {
+            Quality.DIMINISHED: 'd',
+            Quality.MINOR: 'm',
+            Quality.PERFECT: 'P',
+            Quality.MAJOR: 'M',
+            Quality.AUGMENTED: 'A',
+        }
+
+        quality = qualities[self.quality]
+        size = self.size.value + 1
+
+        return f'{quality}{size}'
 
     def __eq__(self, other: 'Interval'):
         if not isinstance(other, type(self)):

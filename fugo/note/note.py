@@ -16,6 +16,25 @@ class Note:
         self.accidental: Accidental = copy.accidental
         self.octave: int = copy.octave
 
+    def __repr__(self):
+        string = str(self)
+        return f'Note({string!r})'
+
+    def __str__(self):
+        accidentals = {
+            Accidental.DOUBLE_FLAT: 'bb',
+            Accidental.FLAT: 'b',
+            Accidental.NATURAL: '',
+            Accidental.SHARP: '#',
+            Accidental.DOUBLE_SHARP: 'x',
+        }
+
+        letter = self.letter.name
+        accidental = accidentals[self.accidental]
+        octave = str(self.octave)
+
+        return f'{letter}{accidental}{octave}'
+
     def __eq__(self, other: 'Note') -> bool:
         if not isinstance(other, type(self)):
             return NotImplemented

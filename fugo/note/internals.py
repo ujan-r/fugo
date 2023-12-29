@@ -38,6 +38,9 @@ class Accidental(Enum):
     def __init__(self, offset: int):
         self.offset = offset
 
+    def __repr__(self):
+        return f'Accidental.{self.name}'
+
     @classmethod
     def from_string(cls, /, accidental: str) -> 'Accidental':
         mapping = {

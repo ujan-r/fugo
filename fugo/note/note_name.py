@@ -17,6 +17,24 @@ class NoteName:
         self.letter = copy.letter
         self.accidental = copy.accidental
 
+    def __repr__(self):
+        string = str(self)
+        return f'NoteName({string!r})'
+
+    def __str__(self):
+        accidentals = {
+            Accidental.DOUBLE_FLAT: 'bb',
+            Accidental.FLAT: 'b',
+            Accidental.NATURAL: '',
+            Accidental.SHARP: '#',
+            Accidental.DOUBLE_SHARP: 'x',
+        }
+
+        letter = self.letter.name
+        accidental = accidentals[self.accidental]
+
+        return f'{letter}{accidental}'
+
     def __hash__(self):
         return self.pitch
 
