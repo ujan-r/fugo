@@ -1,11 +1,141 @@
-__all__ = ['distance', 'Note']
+__all__ = ['distance', 'Note', 'NoteName']
 
 from dataclasses import dataclass
+from enum import Enum
 from functools import total_ordering
 
 from fugo import Interval
-from ..interval.internals import Size, Quality
-from .internals import Accidental, LetterName
+from fugo.interval import Size, Quality
+
+
+class LetterName(Enum):
+    C = 0
+    D = 2
+    E = 4
+    F = 5
+    G = 7
+    A = 9
+    B = 11
+
+    def __init__(self, steps_above_C: int):
+        self.steps_above_C = steps_above_C
+
+    def __repr__(self):
+        return f'LetterName.{self.name}'
+
+    @classmethod
+    def from_string(cls, /, letter: str) -> 'LetterName':
+        try:
+            return cls[letter.strip().upper()]
+        except KeyError:
+            raise ValueError(f'invalid letter: {letter!r}') from None
+
+
+class Accidental(Enum):
+    # fmt: off
+    DOUBLE_FLAT  = -2
+    FLAT         = -1
+    NATURAL      =  0
+    SHARP        = +1
+    DOUBLE_SHARP = +2
+    # fmt: on
+
+    def __init__(self, offset: int):
+        self.offset = offset
+
+    def __repr__(self):
+        return f'Accidental.{self.name}'
+
+    @classmethod
+    def from_string(cls, /, accidental: str) -> 'Accidental':
+        mapping = {
+            '𝄫': cls.DOUBLE_FLAT,
+            'bb': cls.DOUBLE_FLAT,
+            '♭': cls.FLAT,
+            'b': cls.FLAT,
+            '♮': cls.NATURAL,
+            '': cls.NATURAL,
+            '♯': cls.SHARP,
+            '#': cls.SHARP,
+            '𝄪': cls.DOUBLE_SHARP,
+            'x': cls.DOUBLE_SHARP,
+        }
+
+        try:
+            return mapping[accidental.strip()]
+        except KeyError:
+            raise ValueError(f'invalid accidental: {accidental!r}') from None
+
+
+@dataclass
+class NoteName:
+    letter: LetterName
+    accidental: Accidental
+
+    def __init__(self, name: str):
+        copy = self.from_string(name)
+
+        self.letter = copy.letter
+        self.accidental = copy.accidental
+
+    def __repr__(self):
+        string = str(self)
+        return f'NoteName({string!r})'
+
+    def __str__(self):
+        accidentals = {
+            Accidental.DOUBLE_FLAT: 'bb',
+            Accidental.FLAT: 'b',
+            Accidental.NATURAL: '',
+            Accidental.SHARP: '#',
+            Accidental.DOUBLE_SHARP: 'x',
+        }
+
+        letter = self.letter.name
+        accidental = accidentals[self.accidental]
+
+        return f'{letter}{accidental}'
+
+    def __hash__(self):
+        return self.pitch
+
+    def __add__(self, interval: Interval) -> 'NoteName':
+        letters = [*LetterName]
+        current = letters.index(self.letter)
+        new = current + interval.size.value
+        letter = letters[new % len(letters)]
+
+        distance = letter.steps_above_C - self.pitch
+        offset = (interval.steps - distance) % 12
+        offset = min(offset, offset - 12, key=abs)
+        accidental = Accidental(offset)
+
+        return NoteName.from_attrs(letter, accidental)
+
+    def __sub__(self, interval: Interval) -> 'NoteName':
+        return self + ~interval
+
+    @classmethod
+    def from_string(cls, name: str):
+        name = name.strip()
+
+        letter = LetterName.from_string(name[0])
+        accidental = Accidental.from_string(name[1:])
+
+        return cls.from_attrs(letter, accidental)
+
+    @classmethod
+    def from_attrs(cls, letter: LetterName, accidental: Accidental):
+        obj = super().__new__(cls)
+
+        obj.letter = letter
+        obj.accidental = accidental
+
+        return obj
+
+    @property
+    def pitch(self) -> int:
+        return (self.letter.steps_above_C + self.accidental.offset) % 12
 
 
 @total_ordering

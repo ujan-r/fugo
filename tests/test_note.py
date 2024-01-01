@@ -1,5 +1,5 @@
 from fugo import Note
-from fugo.note.internals import Accidental, LetterName
+from fugo.note import Accidental, LetterName
 
 
 def test_parsing():

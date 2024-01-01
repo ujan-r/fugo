@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 from fugo import Interval, NoteName
-from fugo.note.internals import Accidental, LetterName
+from fugo.note import Accidental, LetterName
 
 
 class Quality(list[Interval], Enum):

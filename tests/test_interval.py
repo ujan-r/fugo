@@ -1,5 +1,5 @@
 from fugo import Interval, Note, distance
-from fugo.interval.internals import Size, Quality
+from fugo.interval import Size, Quality
 
 
 def test_parsing():
