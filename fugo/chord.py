@@ -2,6 +2,7 @@ __all__ = ['Quality', 'Chord']
 
 from dataclasses import dataclass
 from enum import Enum
+from typing import overload
 
 from fugo import Interval, NoteName
 from fugo.note import Accidental, LetterName
@@ -74,8 +75,21 @@ class Chord:
     quality: list[Interval]
     inversion: int = 0
 
-    def __init__(self, chord: str):
-        copy = self.from_string(chord)
+    @overload
+    def __init__(self, chord: str, /):
+        ...
+
+    @overload
+    def __init__(self, root: NoteName, quality: list[Interval], inversion: int = 0, /):
+        ...
+
+    def __init__(self, *args):
+        match args:
+            case str(),:
+                copy = self.from_string(*args)
+            case _:
+                copy = self.from_attrs(*args)
+
         vars(self).update(vars(copy))
 
     def __iter__(self):

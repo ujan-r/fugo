@@ -3,6 +3,7 @@ __all__ = ['distance', 'Note', 'NoteName']
 from dataclasses import dataclass
 from enum import Enum
 from functools import total_ordering
+from typing import overload
 
 from fugo import Interval
 from fugo.interval import Size, Quality
@@ -72,11 +73,24 @@ class NoteName:
     letter: LetterName
     accidental: Accidental
 
-    def __init__(self, name: str):
-        copy = self.from_string(name)
+    @overload
+    def __init__(self, name: str, /):
+        ...
 
-        self.letter = copy.letter
-        self.accidental = copy.accidental
+    @overload
+    def __init__(self, letter: LetterName, accidental: Accidental, /):
+        ...
+
+    def __init__(self, *args):
+        match args:
+            case str(),:
+                copy = self.from_string(*args)
+            case LetterName(), Accidental():
+                copy = self.from_attrs(*args)
+            case _:
+                raise ValueError('invalid arguments to NoteName.__init__()')
+
+        vars(self).update(vars(copy))
 
     def __repr__(self):
         string = str(self)
@@ -145,8 +159,23 @@ class Note:
     accidental: Accidental
     octave: int
 
-    def __init__(self, /, note: str):
-        copy = Note.from_string(note)
+    @overload
+    def __init__(self, note: str, /):
+        ...
+
+    @overload
+    def __init__(self, letter: LetterName, accidental: Accidental, octave: int, /):
+        ...
+
+    def __init__(self, *args):
+        match args:
+            case str(),:
+                copy = self.from_string(*args)
+            case LetterName(), Accidental(), int():
+                copy = self.from_attrs(*args)
+            case _:
+                raise ValueError
+
         vars(self).update(vars(copy))
 
     def __repr__(self):

@@ -1,6 +1,7 @@
 __all__ = ['Interval']
 
 from enum import Enum, auto
+from typing import overload
 
 
 class Size(Enum):
@@ -41,11 +42,26 @@ class Quality(Enum):
 class Interval:
     """Represent the distance between two notes."""
 
-    def __init__(self, /, interval: str):
+    @overload
+    def __init__(self, interval: str, /):
+        ...
+
+    @overload
+    def __init__(self, quality: Quality, size: Size, /):
+        ...
+
+    def __init__(self, *args):
         self.quality: Quality
         self.size: Size
 
-        copy = self.from_string(interval)
+        match args:
+            case str(),:
+                copy = self.from_string(*args)
+            case Quality(), Size():
+                copy = self.from_attrs(*args)
+            case _:
+                raise ValueError('invalid arguments')
+
         vars(self).update(vars(copy))
 
     def __repr__(self):
