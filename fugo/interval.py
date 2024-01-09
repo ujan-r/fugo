@@ -1,5 +1,6 @@
 __all__ = ['Interval']
 
+from dataclasses import dataclass
 from enum import Enum, auto
 from typing import overload
 
@@ -39,8 +40,12 @@ class Quality(Enum):
         return [*reversed(Quality)][index]
 
 
+@dataclass
 class Interval:
     """Represent the distance between two notes."""
+
+    quality: Quality
+    size: Size
 
     @overload
     def __init__(self, interval: str, /):
@@ -51,9 +56,6 @@ class Interval:
         ...
 
     def __init__(self, *args):
-        self.quality: Quality
-        self.size: Size
-
         match args:
             case str(),:
                 copy = self.from_string(*args)
