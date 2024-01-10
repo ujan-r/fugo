@@ -138,6 +138,12 @@ class Chord:
 
     @classmethod
     def from_attrs(cls, root: NoteName, quality: list[Interval], inversion: int = 0):
+        if inversion >= len(quality):
+            raise ValueError(
+                f'invalid inversion: {inversion}'
+                f' (chord only has {len(quality)} members)'
+            )
+
         chord = super().__new__(cls)
         chord.root = root
         chord.quality = quality
@@ -151,5 +157,4 @@ class Chord:
         notes = [self.root + interval for interval in intervals]
 
         # Invert the chord as necessary.
-        inversion = self.inversion % len(self.quality)
-        return notes[inversion:] + notes[:inversion]
+        return notes[self.inversion :] + notes[: self.inversion]
