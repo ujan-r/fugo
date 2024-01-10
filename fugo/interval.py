@@ -25,6 +25,10 @@ class Size(Enum):
     def __invert__(self):
         return Size(7 - self.value)
 
+    @property
+    def number(self) -> int:
+        return self.value + 1
+
 
 class Quality(Enum):
     # fmt: off
