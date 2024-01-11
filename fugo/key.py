@@ -1,6 +1,6 @@
-__all__ = ['Mode']
+__all__ = ['Mode', 'Degree']
 
-from enum import Enum
+from enum import Enum, auto
 
 from fugo import Interval
 
@@ -24,3 +24,26 @@ class Mode(Enum):
 
     def __len__(self):
         return len(self.intervals)
+
+
+class Degree(Enum):
+    """Represent a scale degree."""
+
+    # fmt: off
+    TONIC        = auto()
+    SUPERTONIC   = auto()
+    MEDIANT      = auto()
+    SUBDOMINANT  = auto()
+    DOMINANT     = auto()
+    SUBMEDIANT   = auto()
+    LEADING_TONE = auto()
+    SUBTONIC     = auto()
+    SEVENTH      = auto()
+
+    FIRST   = TONIC
+    SECOND  = SUPERTONIC
+    THIRD   = MEDIANT
+    FOURTH  = SUBDOMINANT
+    FIFTH   = DOMINANT
+    SIXTH   = SUBMEDIANT
+    # fmt: on
