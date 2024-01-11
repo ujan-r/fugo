@@ -5,3 +5,4 @@ from .motion import *
 from .duration import *
 from .meter import *
 from .time import *
+from .key import *
