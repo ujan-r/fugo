@@ -47,3 +47,20 @@ class Degree(Enum):
     FIFTH   = DOMINANT
     SIXTH   = SUBMEDIANT
     # fmt: on
+
+    @classmethod
+    def _missing_(cls, degree: int):
+        if degree < 1:
+            raise ValueError(f'invalid scale degree ({degree!r})')
+
+        i = degree - 1
+        degrees = [
+            cls.FIRST,
+            cls.SECOND,
+            cls.THIRD,
+            cls.FOURTH,
+            cls.FIFTH,
+            cls.SIXTH,
+            cls.SEVENTH,
+        ]
+        return degrees[i]
