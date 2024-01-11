@@ -158,3 +158,8 @@ class Chord:
 
         # Invert the chord as necessary.
         return notes[self.inversion :] + notes[: self.inversion]
+
+    @property
+    def bass(self) -> NoteName:
+        interval = self.quality[self.inversion]
+        return self.root + interval

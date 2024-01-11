@@ -62,3 +62,16 @@ def test_members():
 
     for chord, names in expected.items():
         assert chord.note_names == names
+
+
+def test_bass():
+    cases = {
+        'C': 'C',
+        'D7': 'D',
+        'Em/B': 'B',
+        'F#m7': 'F#',
+        'G/D': 'D',
+    }
+
+    for chord, bass in cases.items():
+        assert Chord(chord).bass == NoteName(bass)
