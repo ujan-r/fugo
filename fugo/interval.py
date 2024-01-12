@@ -102,11 +102,17 @@ class Interval:
 
     @classmethod
     def from_attrs(cls, quality: Quality, size: Size) -> 'Interval':
-        obj = super().__new__(cls)
+        match quality:
+            case Quality.MAJOR | Quality.MINOR:
+                if size in (Size.UNISON, Size.FOURTH, Size.FIFTH, Size.OCTAVE):
+                    raise ValueError(f'invalid interval ({quality.name} {size.name})')
+            case Quality.PERFECT:
+                if size in (Size.SECOND, Size.THIRD, Size.SIXTH, Size.SEVENTH):
+                    raise ValueError(f'invalid interval ({quality.name} {size.name})')
 
+        obj = super().__new__(cls)
         obj.quality = quality
         obj.size = size
-
         return obj
 
     @classmethod
