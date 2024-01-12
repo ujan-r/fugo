@@ -42,3 +42,24 @@ def test_distance():
 
     for notes, interval in expected.items():
         assert distance(*notes) == interval
+
+
+def test_addition():
+    cases = [
+        ('d1', 'M7', 'm7'),
+        ('d1', 'P8', 'd8'),
+        ('P1', 'd2', 'd2'),
+        ('P1', 'P1', 'P1'),
+        ('P1', 'P8', 'P8'),
+        ('A1', 'M3', 'A3'),
+        ('M2', 'M2', 'M3'),
+        ('m3', 'P5', 'm7'),
+        ('A3', 'm2', 'A4'),
+        ('P4', 'P5', 'P8'),
+        ('m6', 'm3', 'd8'),
+        ('m7', 'P4', 'm3'),
+        ('d8', 'M3', 'm3'),
+    ]
+
+    for a, b, c in cases:
+        assert Interval(a) + Interval(b) == Interval(c), Interval(a) + Interval(b)

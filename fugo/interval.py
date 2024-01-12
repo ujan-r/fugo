@@ -100,6 +100,45 @@ class Interval:
     def __invert__(self):
         return self.from_attrs(~self.quality, ~self.size)
 
+    def __add__(self, other: 'Interval') -> 'Interval':
+        if not isinstance(other, Interval):
+            return NotImplemented
+
+        size = Size(self.size.value + other.size.value)
+        steps = self.steps + other.steps
+
+        perfect = {
+            Size.UNISON: 0,
+            Size.FOURTH: 5,
+            Size.FIFTH: 7,
+            Size.OCTAVE: 0,
+        }
+
+        imperfect = {
+            Size.SECOND: 2,
+            Size.THIRD: 4,
+            Size.SIXTH: 9,
+            Size.SEVENTH: 11,
+        }
+
+        if size in perfect:
+            offset = (steps - perfect[size]) % 12
+            quality = {
+                1: Quality.AUGMENTED,
+                0: Quality.PERFECT,
+                11: Quality.DIMINISHED,
+            }[offset]
+        else:
+            offset = (steps - imperfect[size]) % 12
+            quality = {
+                1: Quality.AUGMENTED,
+                0: Quality.MAJOR,
+                11: Quality.MINOR,
+                10: Quality.DIMINISHED,
+            }[offset]
+
+        return self.from_attrs(quality, size)
+
     @classmethod
     def from_attrs(cls, quality: Quality, size: Size) -> 'Interval':
         match quality:
