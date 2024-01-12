@@ -208,6 +208,34 @@ class Note:
     def __hash__(self):
         return self.pitch
 
+    def __add__(self, interval: Interval) -> 'Note':
+        letters = [*LetterName]
+        index = letters.index(self.letter)
+        shift, j = divmod(index + interval.size.value, len(letters))
+
+        letter = letters[j]
+        octave = self.octave + shift
+
+        result = Note.from_attrs(letter, Accidental.NATURAL, octave)
+        offset = interval.steps - (result.pitch - self.pitch)
+
+        accidental = Accidental(offset)
+        return Note.from_attrs(letter, accidental, octave)
+
+    def __sub__(self, interval: Interval) -> 'Note':
+        letters = [*LetterName]
+        index = letters.index(self.letter)
+        shift, j = divmod(index - interval.size.value, len(letters))
+
+        letter = letters[j]
+        octave = self.octave + shift
+
+        result = Note.from_attrs(letter, Accidental.NATURAL, octave)
+        offset = (self.pitch - result.pitch) - interval.steps
+
+        accidental = Accidental(offset)
+        return Note.from_attrs(letter, accidental, octave)
+
     @classmethod
     def from_attrs(cls, letter: LetterName, accidental: Accidental, octave: int):
         # Create a new `Note` object without using the constructor,

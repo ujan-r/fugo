@@ -1,3 +1,4 @@
+from fugo import Interval
 from fugo import Note
 from fugo.note import Accidental, LetterName
 
@@ -36,3 +37,49 @@ def test_comparisons():
     assert Note('E2') != Note('Fb2')
     assert Note('C8') > Note('D7')
     assert Note('Cb4') >= Note('B3')
+
+
+def test_addition():
+    """Test `Note` + `Interval` addition."""
+    cases = [
+        ('Cb5', 'd1', 'Cbb5'),
+        ('Cb5', 'P5', 'Gb5'),
+        ('C#2', 'd8', 'C3'),
+        ('C-1', 'P8', 'C0'),
+        ('Cb3', 'A8', 'C4'),
+        ('Cb5', 'A8', 'C6'),
+        ('D8', 'P1', 'D8'),
+        ('D#2', 'm6', 'B2'),
+        ('Eb3', 'm6', 'Cb4'),
+        ('E6', 'm6', 'C7'),
+        ('F2', 'M3', 'A2'),
+        ('G8', 'd2', 'Abb8'),
+        ('G#3', 'P4', 'C#4'),
+        ('G#9', 'M2', 'A#9'),
+        ('A4', 'P5', 'E5'),
+        ('A#7', 'm2', 'B7'),
+        ('B#4', 'd1', 'B4'),
+        ('B#6', 'P1', 'B#6'),
+        ('B#4', 'P5', 'Fx5'),
+    ]
+
+    for a, b, c in cases:
+        assert Note(a) + Interval(b) == Note(c), Note(a) + Interval(b)
+
+
+def test_subtraction():
+    """Test `Note` - `Interval` subtraction."""
+    cases = [
+        ('C5', 'P5', 'F4'),
+        ('C#2', 'M3', 'A1'),
+        ('D8', 'P8', 'D7'),
+        ('Eb4', 'm2', 'D4'),
+        ('E-1', 'M3', 'C-1'),
+        ('F6', 'P1', 'F6'),
+        ('G2', 'm6', 'B1'),
+        ('Ab3', 'P4', 'Eb3'),
+        ('Bb9', 'M7', 'Cb9'),
+    ]
+
+    for a, b, c in cases:
+        assert Note(a) - Interval(b) == Note(c), Note(a) - Interval(b)
