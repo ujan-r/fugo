@@ -95,7 +95,8 @@ def test_addition():
         assert a + b == c
 
 
-def test_subtraction():
+def test_interval_subtraction():
+    """Test `NoteName` - `Interval` subtraction."""
     expected = [
         (NoteName('D'), Interval('d1'), NoteName('D#')),
         (NoteName('Gb'), Interval('d1'), NoteName('G')),
@@ -148,3 +149,22 @@ def test_subtraction():
 
     for a, b, c in expected:
         assert a - b == c
+
+
+def test_subtraction():
+    """Test `NoteName` - `NoteName` subtraction."""
+    cases = [
+        ('C', 'B', 'm2'),
+        ('C#', 'C', 'A1'),
+        ('Db', 'Ab', 'P4'),
+        ('Eb', 'F#', 'd7'),
+        ('F', 'D', 'm3'),
+        ('G', 'G#', 'd8'),
+        ('Ab', 'C', 'm6'),
+        ('A', 'Ab', 'A1'),
+        ('B', 'E', 'P5'),
+        ('B', 'C#', 'm7'),
+    ]
+
+    for a, b, c in cases:
+        assert NoteName(a) - NoteName(b) == Interval(c)

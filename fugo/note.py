@@ -126,8 +126,26 @@ class NoteName:
 
         return NoteName.from_attrs(letter, accidental)
 
-    def __sub__(self, interval: Interval) -> 'NoteName':
-        return self + ~interval
+    @overload
+    def __sub__(self, interval: Interval, /) -> 'NoteName':
+        ...
+
+    @overload
+    def __sub__(self, other: 'NoteName', /) -> Interval:
+        ...
+
+    def __sub__(self, other):
+        match other:
+            case Interval():
+                return self + ~other
+            case NoteName():
+                n1 = Note(self.letter, self.accidental, 0)
+                n2 = Note(other.letter, other.accidental, 0)
+                if n1 < n2:
+                    n1.octave += 1
+                return distance(n1, n2)
+            case _:
+                return NotImplemented
 
     @classmethod
     def from_string(cls, name: str):
