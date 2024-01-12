@@ -226,7 +226,7 @@ class Interval:
     def steps(self) -> int:
         return {
             # unisons
-            Interval('d1'): 11,
+            Interval('d1'): -1,
             Interval('P1'): 0,
             Interval('A1'): 1,
             # seconds
@@ -259,6 +259,6 @@ class Interval:
             Interval('A7'): 12,
             # octaves
             Interval('d8'): 11,
-            Interval('P8'): 0,
-            Interval('A8'): 1,
+            Interval('P8'): 12,
+            Interval('A8'): 13,
         }[self]
