@@ -1,4 +1,5 @@
-from fugo import Chord, Quality, NoteName
+from fugo import Interval, NoteName
+from fugo import Chord, Quality
 
 
 def test_parsing():
@@ -75,3 +76,20 @@ def test_bass():
 
     for chord, bass in cases.items():
         assert Chord(chord).bass == NoteName(bass)
+
+
+def test_intervals():
+    def parse(s: str) -> list[Interval]:
+        return [Interval(x) for x in s.split()]
+
+    cases = {
+        'Cm': 'm3 P5',
+        'D': 'M3 P5',
+        'Edim': 'm3 d5',
+        'F7/C': 'm3 P4 M6',
+        'Gm7/Bb': 'M3 P5 M6',
+        'A/E': 'P4 M6',
+    }
+
+    for chord, intervals in cases.items():
+        assert Chord(chord).intervals == parse(intervals)
