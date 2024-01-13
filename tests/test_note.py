@@ -1,6 +1,5 @@
-from fugo import Interval
-from fugo import Note
-from fugo.note import Accidental, LetterName
+from fugo import Accidental, LetterName
+from fugo import Interval, Note
 
 
 def test_parsing():

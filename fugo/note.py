@@ -1,4 +1,4 @@
-__all__ = ['distance', 'Note', 'NoteName']
+__all__ = ['LetterName', 'Accidental', 'Note', 'NoteName', 'distance']
 
 from dataclasses import dataclass
 from enum import Enum

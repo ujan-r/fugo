@@ -4,8 +4,7 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from typing import overload
 
-from fugo import Interval, NoteName
-from fugo.note import Accidental, LetterName
+from fugo import Accidental, Interval, LetterName, NoteName
 
 
 class Mode(Enum):
