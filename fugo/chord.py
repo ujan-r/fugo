@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import overload
 
-from fugo import Accidental, Interval, LetterName, NoteName
+from fugo import Accidental, Interval, Key, LetterName, NoteName
 
 
 class Quality(list[Interval], Enum):
@@ -167,3 +167,73 @@ class Chord:
     def intervals(self) -> list[Interval]:
         bass, *notes = self.note_names
         return [note - bass for note in notes]
+
+    def figures(
+        self, key: Key | None = None, *, shorthand: bool = True
+    ) -> list[tuple[Accidental | None, int]]:
+        """Return the figures for a chord.
+
+        args:
+            - `key`:
+                - `Key` for determining accidentals, or
+                - `None` to attach accidentals to all figures
+            - `shorthand`: omit implied figures
+
+        returns:
+            - list of `figure`s
+                - `figure`: `(symbol, number)`
+                    - `symbol`: an `Accidental` if required by `key`,
+                    `None` otherwise
+                    - `number`: interval above bass
+
+        notes:
+            - `shorthand` has no effect if `key is None`
+
+        examples:
+            >>> from fugo import Chord, Key
+            >>> D7 = Chord('D7')
+            >>> D7.figures()
+            [(Accidental.NATURAL, 7), (Accidental.NATURAL, 5), (Accidental.SHARP, 3)]
+            >>> D7.figures(Key('G'))
+            [(None, 7)]
+            >>> D7.figures(Key('G'), shorthand=False)
+            [(None, 7), (None, 5), (None, 3)]
+        """
+        intervals = reversed(self.intervals)
+        *notes, bass = reversed(self.note_names)
+
+        def figure(note: NoteName, interval: Interval) -> tuple[Accidental | None, int]:
+            requires_accidental = key is None or note not in key
+            symbol = note.accidental if requires_accidental else None
+            number = interval.size.number
+            return symbol, number
+
+        figures = [figure(note, interval) for note, interval in zip(notes, intervals)]
+
+        if shorthand:
+            match figures:
+                # triad, root position (5/3 -> _)
+                case [(None, 5), (None, 3)]:
+                    figures = []
+
+                # triad, 1st inversion (6/3 -> 6)
+                case [(_, 6), (None, 3)]:
+                    figures = figures[:1]
+
+                # seventh, root position (7/5/3 -> 7)
+                case [(_, 7), (None, 5), (None, 3)]:
+                    figures = figures[:1]
+
+                # seventh, 1st inversion (6/5/3 -> 6/5)
+                case [(_, 6), (_, 5), (None, 3)]:
+                    figures = figures[:2]
+
+                # seventh, 2nd inversion (6/4/3 -> 4/3)
+                case [(None, 6), (_, 4), (_, 3)]:
+                    figures = figures[1:]
+
+                # seventh, 3rd inversion (6/4/2 -> 4/2)
+                case [(None, 6), (_, 4), (_, 2)]:
+                    figures = figures[1:]
+
+        return figures

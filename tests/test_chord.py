@@ -1,4 +1,4 @@
-from fugo import Interval, NoteName
+from fugo import Accidental, Interval, Key, NoteName
 from fugo import Chord, Quality
 
 
@@ -93,3 +93,54 @@ def test_intervals():
 
     for chord, intervals in cases.items():
         assert Chord(chord).intervals == parse(intervals)
+
+
+def test_figures():
+    FLAT = Accidental.FLAT
+    NATURAL = Accidental.NATURAL
+    SHARP = Accidental.SHARP
+
+    chords = {
+        'D': {
+            'C': [(None, 5), (SHARP, 3)],
+            'D': [],
+        },
+        'Fm': {
+            'C': [(None, 5), (FLAT, 3)],
+            'c': [],
+        },
+        'Gdim/Bb': {
+            'Ab': [(None, 6)],
+            'Bb': [(None, 6), (FLAT, 3)],
+            'bb': [(NATURAL, 6)],
+        },
+        'F+/C#': {
+            'd': [(None, 6), (None, 4)],
+            'A': [(None, 6), (NATURAL, 4)],
+        },
+        'D7': {
+            'C': [(None, 7), (None, 5), (SHARP, 3)],
+            'D': [(NATURAL, 7)],
+            'G': [(None, 7)],
+        },
+        'Gm7/Bb': {
+            'Eb': [(None, 6), (None, 5)],
+            'f': [(None, 6), (None, 5), (NATURAL, 3)],
+            'A': [(NATURAL, 6), (NATURAL, 5)],
+        },
+        'AM7/E': {
+            'C lydian': [(SHARP, 6), (None, 4), (SHARP, 3)],
+            'D': [(None, 4), (SHARP, 3)],
+            'E': [(None, 4), (None, 3)],
+        },
+        'C#m7/B': {
+            'D': [(SHARP, 6), (None, 4), (None, 2)],
+            'A': [(None, 4), (None, 2)],
+        },
+    }
+
+    for c, cases in chords.items():
+        chord = Chord(c)
+        for k, figures in cases.items():
+            key = Key(k)
+            assert chord.figures(key) == figures
