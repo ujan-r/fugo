@@ -91,6 +91,40 @@ class Chord:
 
         vars(self).update(vars(copy))
 
+    def __repr__(self):
+        if pretty := self._pretty():
+            return f'Chord({pretty!r})'
+
+        return f'Chord({self.root!r}, {self.quality!r}, inversion={self.inversion!r})'
+
+    def _pretty(self) -> str | None:
+        root = str(self.root)
+        bass = f'/{self.bass}' if self.inversion else ''
+
+        match self.quality:
+            case Quality.MAJOR:
+                return root + bass
+            case Quality.MINOR:
+                return root + 'm' + bass
+            case Quality.DIMINISHED:
+                return root + 'º' + bass
+            case Quality.AUGMENTED:
+                return root + '+' + bass
+            case Quality.MAJ_MIN_7:
+                return root + '7' + bass
+            case Quality.MAJ_7:
+                return root + 'M7' + bass
+            case Quality.MIN_7:
+                return root + 'm7' + bass
+            case Quality.MIN_MAJ_7:
+                return root + 'mM7' + bass
+            case Quality.DIM_7:
+                return root + 'º7' + bass
+            case Quality.HALF_DIM_7:
+                return root + 'ø7' + bass
+
+        return None
+
     def __iter__(self):
         return iter(self.note_names)
 
