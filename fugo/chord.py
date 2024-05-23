@@ -86,8 +86,10 @@ class Chord:
         match args:
             case str(),:
                 copy = self.from_string(*args)
-            case _:
+            case NoteName(), list(), *_:
                 copy = self.from_attrs(*args)
+            case _:
+                raise TypeError('invalid arguments')
 
         vars(self).update(vars(copy))
 
