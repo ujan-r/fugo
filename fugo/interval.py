@@ -52,12 +52,10 @@ class Interval:
     size: Size
 
     @overload
-    def __init__(self, interval: str, /):
-        ...
+    def __init__(self, interval: str, /): ...
 
     @overload
-    def __init__(self, quality: Quality, size: Size, /):
-        ...
+    def __init__(self, quality: Quality, size: Size, /): ...
 
     def __init__(self, *args):
         match args:

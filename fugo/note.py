@@ -74,12 +74,10 @@ class NoteName:
     accidental: Accidental
 
     @overload
-    def __init__(self, name: str, /):
-        ...
+    def __init__(self, name: str, /): ...
 
     @overload
-    def __init__(self, letter: LetterName, accidental: Accidental, /):
-        ...
+    def __init__(self, letter: LetterName, accidental: Accidental, /): ...
 
     def __init__(self, *args):
         match args:
@@ -127,12 +125,10 @@ class NoteName:
         return NoteName.from_attrs(letter, accidental)
 
     @overload
-    def __sub__(self, interval: Interval, /) -> 'NoteName':
-        ...
+    def __sub__(self, interval: Interval, /) -> 'NoteName': ...
 
     @overload
-    def __sub__(self, other: 'NoteName', /) -> Interval:
-        ...
+    def __sub__(self, other: 'NoteName', /) -> Interval: ...
 
     def __sub__(self, other):
         match other:
@@ -178,12 +174,10 @@ class Note:
     octave: int
 
     @overload
-    def __init__(self, note: str, /):
-        ...
+    def __init__(self, note: str, /): ...
 
     @overload
-    def __init__(self, letter: LetterName, accidental: Accidental, octave: int, /):
-        ...
+    def __init__(self, letter: LetterName, accidental: Accidental, octave: int, /): ...
 
     def __init__(self, *args):
         match args:

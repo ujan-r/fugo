@@ -75,12 +75,12 @@ class Chord:
     inversion: int = 0
 
     @overload
-    def __init__(self, chord: str, /):
-        ...
+    def __init__(self, chord: str, /): ...
 
     @overload
-    def __init__(self, root: NoteName, quality: list[Interval], inversion: int = 0, /):
-        ...
+    def __init__(
+        self, root: NoteName, quality: list[Interval], inversion: int = 0, /
+    ): ...
 
     def __init__(self, *args):
         match args:

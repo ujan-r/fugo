@@ -76,12 +76,10 @@ class Key:
     mode: Mode
 
     @overload
-    def __init__(self, key: str, /):
-        ...
+    def __init__(self, key: str, /): ...
 
     @overload
-    def __init__(self, tonic: NoteName, mode: Mode, /):
-        ...
+    def __init__(self, tonic: NoteName, mode: Mode, /): ...
 
     def __init__(self, *args):
         match args:
