@@ -1,11 +1,4 @@
-__all__ = [
-    'Duration',
-    'WHOLE',
-    'HALF',
-    'QUARTER',
-    'EIGHTH',
-    'SIXTEENTH',
-]
+__all__ = ['Duration']
 
 from fractions import Fraction
 
@@ -21,6 +14,12 @@ class Duration(Fraction):
         - `Duration`s are independent of meter
             - the length of an eight note is 1/8 in 2/2, 3/4, and 7/8
     """
+
+    WHOLE: 'Duration'
+    HALF: 'Duration'
+    QUARTER: 'Duration'
+    EIGHTH: 'Duration'
+    SIXTEENTH: 'Duration'
 
     def __add__(self, other) -> 'Duration':
         return Duration(super().__add__(other))
@@ -67,8 +66,8 @@ class Duration(Fraction):
         return quotient, Duration(remainder)
 
 
-WHOLE = Duration(1)
-HALF = Duration(1, 2)
-QUARTER = Duration(1, 4)
-EIGHTH = Duration(1, 8)
-SIXTEENTH = Duration(1, 16)
+Duration.WHOLE = Duration(1)
+Duration.HALF = Duration(1, 2)
+Duration.QUARTER = Duration(1, 4)
+Duration.EIGHTH = Duration(1, 8)
+Duration.SIXTEENTH = Duration(1, 16)

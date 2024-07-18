@@ -1,9 +1,9 @@
-from fugo import WHOLE, HALF, QUARTER, EIGHTH, SIXTEENTH
+from fugo import Duration
 
 
 def test_operators():
-    assert QUARTER + QUARTER == HALF
-    assert WHOLE - QUARTER - QUARTER == HALF
-    assert 4 * SIXTEENTH == QUARTER
-    assert EIGHTH / 2 == SIXTEENTH
-    assert (HALF + EIGHTH) % HALF == EIGHTH
+    assert Duration.QUARTER + Duration.QUARTER == Duration.HALF
+    assert Duration.WHOLE - Duration.QUARTER - Duration.QUARTER == Duration.HALF
+    assert 4 * Duration.SIXTEENTH == Duration.QUARTER
+    assert Duration.EIGHTH / 2 == Duration.SIXTEENTH
+    assert (Duration.HALF + Duration.EIGHTH) % Duration.HALF == Duration.EIGHTH
